@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { BASE_URL } from '../utils/constants';
-import Navbar from './Navbar';
+import Navbar from './NavBar';
 import EditProfile from './EditProfile';
 import { gsap } from 'gsap';
 import TinderCard from 'react-tinder-card';
