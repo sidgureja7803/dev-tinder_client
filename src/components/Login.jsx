@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { addUser } from "../utils/userSlice";
 import { BASE_URL } from "../utils/constants";
 import axios from "axios";
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
+import { signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
 import { auth } from "../firebase/config";
 import { gsap } from "gsap";
 
@@ -32,38 +32,55 @@ const Login = () => {
     setError("");
     
     try {
-      const res = await axios.post(`${BASE_URL}/login`,
+      console.log("Attempting login with:", { emailId });
+      
+      const res = await axios.post(
+        `${BASE_URL}/login`,
         { emailId, password },
-        { withCredentials: true }
+        { 
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }
       );
   
-      dispatch(addUser(res.data.data));
-      gsap.to(".login-form", {
-        scale: 1.02,
-        duration: 0.2,
-        ease: "power1.out",
-        onComplete: () => {
-          gsap.to(".login-form", {
-            scale: 1,
-            duration: 0.2,
-            ease: "power1.in",
-            onComplete: () => {
-              navigate("/app/feed");
-            }
-          });
-        }
-      });
+      console.log("Login response:", res.data);
+      
+      if (res.data.data) {
+        dispatch(addUser(res.data.data));
+        gsap.to(".login-form", {
+          scale: 1.02,
+          duration: 0.2,
+          ease: "power1.out",
+          onComplete: () => {
+            gsap.to(".login-form", {
+              scale: 1,
+              duration: 0.2,
+              ease: "power1.in",
+              onComplete: () => {
+                navigate("/app/feed");
+              }
+            });
+          }
+        });
+      } else {
+        setError("Invalid response from server");
+      }
     } catch (err) {
-      console.error("Login error:", err);
-      setError(err.response?.data?.message || "Invalid credentials");
+      console.error("Login error:", err.response || err);
+      if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else if (err.message === "Network Error") {
+        setError("Unable to connect to server. Please check your connection.");
+      } else {
+        setError("Failed to login. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
   };
-  
-
-  
-
   
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
@@ -80,14 +97,26 @@ const Login = () => {
           lastName: result.user.displayName?.split(' ').slice(1).join(' ') || '',
           photoUrl: result.user.photoURL
         },
-        { withCredentials: true }
+        { 
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }
       );
       
       dispatch(addUser(res.data.data));
       navigate("/app/feed");
     } catch (err) {
-      console.error("Google sign-in error:", err);
-      setError(err.response?.data?.message || "Google sign-in failed");
+      console.error("Google sign-in error:", err.response || err);
+      if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else if (err.message === "Network Error") {
+        setError("Unable to connect to server. Please check your connection.");
+      } else {
+        setError("Google sign-in failed. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
