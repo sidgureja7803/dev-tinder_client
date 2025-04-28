@@ -11,6 +11,15 @@ import { gsap } from "gsap";
 const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
 
+// Configure providers
+googleProvider.setCustomParameters({
+  prompt: 'select_account'
+});
+
+githubProvider.setCustomParameters({
+  prompt: 'consent'
+});
+
 const Login = () => {
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
@@ -88,7 +97,12 @@ const Login = () => {
     
     try {
       const result = await signInWithPopup(auth, googleProvider);
+      console.log("Google auth result:", result);
       
+      if (!result.user?.email) {
+        throw new Error("No email received from Google");
+      }
+
       const res = await axios.post(
         `${BASE_URL}/oauth/google`,
         { 
@@ -106,16 +120,22 @@ const Login = () => {
         }
       );
       
-      dispatch(addUser(res.data.data));
-      navigate("/app/feed");
-    } catch (err) {
-      console.error("Google sign-in error:", err.response || err);
-      if (err.response?.data?.message) {
-        setError(err.response.data.message);
-      } else if (err.message === "Network Error") {
-        setError("Unable to connect to server. Please check your connection.");
+      if (res.data?.data) {
+        dispatch(addUser(res.data.data));
+        navigate("/app/feed");
       } else {
-        setError("Google sign-in failed. Please try again.");
+        throw new Error("Invalid response from server");
+      }
+    } catch (err) {
+      console.error("Google sign-in error:", err);
+      if (err.code === 'auth/popup-closed-by-user') {
+        setError("Sign-in cancelled. Please try again.");
+      } else if (err.code === 'auth/network-request-failed') {
+        setError("Network error. Please check your connection.");
+      } else if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError(err.message || "Failed to sign in with Google. Please try again.");
       }
     } finally {
       setIsLoading(false);
@@ -128,23 +148,45 @@ const Login = () => {
     
     try {
       const result = await signInWithPopup(auth, githubProvider);
+      console.log("GitHub auth result:", result);
+      
+      // GitHub might not provide email directly, need to handle that case
+      const email = result.user?.email || `${result.user?.uid}@github.user`;
       
       const res = await axios.post(
-        `${BASE_URL}/oauth/github`,
+        `${BASE_URL}/oauth/google`, // Note: Using the google endpoint as it handles the same data structure
         { 
-          emailId: result.user.email,
+          emailId: email,
           firstName: result.user.displayName?.split(' ')[0] || 'GitHub',
           lastName: result.user.displayName?.split(' ').slice(1).join(' ') || 'User',
           photoUrl: result.user.photoURL
         },
-        { withCredentials: true }
+        { 
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }
       );
       
-      dispatch(addUser(res.data.data));
-      navigate("/app/feed");
+      if (res.data?.data) {
+        dispatch(addUser(res.data.data));
+        navigate("/app/feed");
+      } else {
+        throw new Error("Invalid response from server");
+      }
     } catch (err) {
       console.error("GitHub sign-in error:", err);
-      setError(err.response?.data?.message || "GitHub sign-in failed");
+      if (err.code === 'auth/popup-closed-by-user') {
+        setError("Sign-in cancelled. Please try again.");
+      } else if (err.code === 'auth/network-request-failed') {
+        setError("Network error. Please check your connection.");
+      } else if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError(err.message || "Failed to sign in with GitHub. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
