@@ -10,81 +10,82 @@ const Landing = () => {
   const featuresRef = useRef(null);
 
   useEffect(() => {
-  const tl = gsap.timeline({
-    defaults: { ease: "power3.out" }
-  });
+    const tl = gsap.timeline({
+      defaults: { ease: "power3.out" }
+    });
 
-  // Animate navigation
-  tl.from('.nav-content', {
-    y: -50,
-    opacity: 0,
-    duration: 1.2,
-  })
-  // Hero title
-  .from('.hero-title span', {
-    y: 120,
-    opacity: 0,
-    duration: 1,
-    stagger: 0.25,
-  }, "-=0.8")
-  // Hero description
-  .from('.hero-description', {
-    y: 40,
-    opacity: 0,
-    duration: 0.8,
-  }, "-=0.6")
-  // Hero buttons
-  .from('.hero-buttons button', {
-    scale: 0.5,
-    opacity: 0,
-    duration: 0.6,
-    stagger: 0.2,
-    ease: "back.out(1.7)"
-  }, "-=0.5");
+    // Animate navigation
+    tl.from('.nav-content', {
+      y: -50,
+      opacity: 0,
+      duration: 1.2,
+    })
+    // Hero title
+    .from('.hero-title span', {
+      y: 120,
+      opacity: 0,
+      duration: 1,
+      stagger: 0.25,
+    }, "-=0.8")
+    // Hero description
+    .from('.hero-description', {
+      y: 40,
+      opacity: 0,
+      duration: 0.8,
+    }, "-=0.6")
+    // Hero buttons
+    .from('.hero-buttons button', {
+      scale: 0.5,
+      opacity: 0,
+      duration: 0.6,
+      stagger: 0.2,
+      ease: "back.out(1.7)"
+    }, "-=0.5");
 
-  // Parallax background floating effect (decorative circles)
-  gsap.to(".absolute div", {
-    y: 30,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut",
-    duration: 5
-  });
+    // Parallax background floating effect (decorative circles)
+    gsap.to(".absolute div", {
+      y: 30,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      duration: 5
+    });
 
-  // Features card animation with rotation
-  gsap.from('.feature-card', {
-    scrollTrigger: {
-      trigger: '.features-section',
-      start: 'top center+=100',
-      toggleActions: 'play none none reverse'
-    },
-    y: 100,
-    opacity: 0,
-    rotateX: 15,
-    rotateY: 5,
-    duration: 1,
-    stagger: 0.3,
-    ease: "power3.out"
-  });
+    // Features card animation with rotation
+    gsap.from('.feature-card', {
+      scrollTrigger: {
+        trigger: '.features-section',
+        start: 'top center+=100',
+        toggleActions: 'play none none reverse'
+      },
+      y: 100,
+      opacity: 0,
+      rotateX: 15,
+      rotateY: 5,
+      duration: 1,
+      stagger: 0.3,
+      ease: "power3.out"
+    });
 
-  // Footer links animation
-  gsap.from('footer a', {
-    scrollTrigger: {
-      trigger: 'footer',
-      start: 'top bottom',
-    },
-    y: 20,
-    opacity: 0,
-    duration: 0.6,
-    stagger: 0.2,
-    ease: "power2.out"
-  });
+    // Footer links animation
+    gsap.from('footer a', {
+      scrollTrigger: {
+        trigger: 'footer',
+        start: 'top bottom',
+      },
+      y: 20,
+      opacity: 0,
+      duration: 0.6,
+      stagger: 0.2,
+      ease: "power2.out"
+    });
 
-  // Clean up
-  return () => {
-    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-  };
-}, []);
+    // Clean up
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-900 to-pink-800 overflow-hidden">
       {/* Navigation */}
@@ -153,19 +154,19 @@ const Landing = () => {
       <div id="features" className="features-section py-32">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="feature-card backdrop-blur-lg bg-white/10 p-8 rounded-2xl border border-purple-700/30 hover:border-purple-700/50 transition-all transform hover:scale-105">
+            <div className="feature-card backdrop-blur-lg bg-white/10 p-8 rounded-2xl border border-purple-700/30 hover:border-purple-700/50 transition-all transform hover:scale-105 hover:rotate-1 shadow-xl hover:shadow-2xl">
               <div className="text-4xl mb-6">👩‍💻</div>
               <h3 className="text-xl font-bold text-white mb-4">Match by Skills</h3>
               <p className="text-purple-200">Find developers who match your tech stack and coding interests. Connect with like-minded programmers.</p>
             </div>
 
-            <div className="feature-card backdrop-blur-lg bg-white/10 p-8 rounded-2xl border border-purple-700/30 hover:border-purple-700/50 transition-all transform hover:scale-105">
+            <div className="feature-card backdrop-blur-lg bg-white/10 p-8 rounded-2xl border border-purple-700/30 hover:border-purple-700/50 transition-all transform hover:scale-105 hover:rotate-1 shadow-xl hover:shadow-2xl">
               <div className="text-4xl mb-6">🤝</div>
               <h3 className="text-xl font-bold text-white mb-4">Collaborate</h3>
               <p className="text-purple-200">Work together on exciting projects, share knowledge, and learn from experienced developers.</p>
             </div>
 
-            <div className="feature-card backdrop-blur-lg bg-white/10 p-8 rounded-2xl border border-purple-700/30 hover:border-purple-700/50 transition-all transform hover:scale-105">
+            <div className="feature-card backdrop-blur-lg bg-white/10 p-8 rounded-2xl border border-purple-700/30 hover:border-purple-700/50 transition-all transform hover:scale-105 hover:rotate-1 shadow-xl hover:shadow-2xl">
               <div className="text-4xl mb-6">🚀</div>
               <h3 className="text-xl font-bold text-white mb-4">Grow Together</h3>
               <p className="text-purple-200">Build meaningful connections in the developer community and accelerate your career growth.</p>
@@ -191,4 +192,4 @@ const Landing = () => {
   );
 };
 
-export default Landing; 
+export default Landing;
