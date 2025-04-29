@@ -10,69 +10,81 @@ const Landing = () => {
   const featuresRef = useRef(null);
 
   useEffect(() => {
-    // Initial animations
-    const tl = gsap.timeline({
-      defaults: { ease: "power3.out" }
-    });
-    
-    // Fade in and slide up the navigation
-    tl.from('.nav-content', {
-      y: -50,
-      opacity: 0,
-      duration: 1,
-    })
-    // Stagger the hero content elements
-    .from('.hero-title span', {
-      y: 100,
-      opacity: 0,
-      duration: 1,
-      stagger: 0.2,
-    })
-    .from('.hero-description', {
-      y: 30,
-      opacity: 0,
-      duration: 0.8,
-    }, "-=0.5")
-    .from('.hero-buttons button', {
-      scale: 0,
-      opacity: 0,
-      duration: 0.6,
-      stagger: 0.2,
-      ease: "back.out(1.7)"
-    }, "-=0.4");
+  const tl = gsap.timeline({
+    defaults: { ease: "power3.out" }
+  });
 
-    // Features animation on scroll
-    gsap.from('.feature-card', {
-      scrollTrigger: {
-        trigger: '.features-section',
-        start: 'top center+=100',
-        toggleActions: 'play none none reverse'
-      },
-      y: 100,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.2,
-      ease: "power2.out"
-    });
+  // Animate navigation
+  tl.from('.nav-content', {
+    y: -50,
+    opacity: 0,
+    duration: 1.2,
+  })
+  // Hero title
+  .from('.hero-title span', {
+    y: 120,
+    opacity: 0,
+    duration: 1,
+    stagger: 0.25,
+  }, "-=0.8")
+  // Hero description
+  .from('.hero-description', {
+    y: 40,
+    opacity: 0,
+    duration: 0.8,
+  }, "-=0.6")
+  // Hero buttons
+  .from('.hero-buttons button', {
+    scale: 0.5,
+    opacity: 0,
+    duration: 0.6,
+    stagger: 0.2,
+    ease: "back.out(1.7)"
+  }, "-=0.5");
 
-    // Parallax effect on hero section
-    gsap.to('.hero-content', {
-      scrollTrigger: {
-        trigger: '.hero-section',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true
-      },
-      y: 100,
-      ease: "none"
-    });
+  // Parallax background floating effect (decorative circles)
+  gsap.to(".absolute div", {
+    y: 30,
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut",
+    duration: 5
+  });
 
-    // Clean up
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
-  }, []);
+  // Features card animation with rotation
+  gsap.from('.feature-card', {
+    scrollTrigger: {
+      trigger: '.features-section',
+      start: 'top center+=100',
+      toggleActions: 'play none none reverse'
+    },
+    y: 100,
+    opacity: 0,
+    rotateX: 15,
+    rotateY: 5,
+    duration: 1,
+    stagger: 0.3,
+    ease: "power3.out"
+  });
 
+  // Footer links animation
+  gsap.from('footer a', {
+    scrollTrigger: {
+      trigger: 'footer',
+      start: 'top bottom',
+    },
+    y: 20,
+    opacity: 0,
+    duration: 0.6,
+    stagger: 0.2,
+    ease: "power2.out"
+  });
+
+  // Clean up
+  return () => {
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+  };
+}, []);
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-900 to-pink-800 overflow-hidden">
       {/* Navigation */}
