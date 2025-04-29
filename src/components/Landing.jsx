@@ -51,22 +51,6 @@ const Landing = () => {
       duration: 5
     });
 
-    // Features card animation with rotation
-    gsap.from('.feature-card', {
-      scrollTrigger: {
-        trigger: '.features-section',
-        start: 'top center+=100',
-        toggleActions: 'play none none reverse'
-      },
-      y: 100,
-      opacity: 0,
-      rotateX: 15,
-      rotateY: 5,
-      duration: 1,
-      stagger: 0.3,
-      ease: "power3.out"
-    });
-
     // Footer links animation
     gsap.from('footer a', {
       scrollTrigger: {
@@ -87,9 +71,9 @@ const Landing = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-900 to-pink-800 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-r from-indigo-500 via-blue-600 to-teal-500 overflow-hidden">
       {/* Navigation */}
-      <nav className="fixed w-full z-50 bg-white/10 backdrop-blur-md">
+      <nav className="fixed w-full z-50 bg-white/30 backdrop-blur-md">
         <div className="container mx-auto px-6 py-4">
           <div className="flex justify-between items-center nav-content">
             <div className="flex items-center">
@@ -119,13 +103,11 @@ const Landing = () => {
           <div className="hero-content max-w-4xl mx-auto text-center">
             <h1 className="hero-title text-5xl md:text-7xl font-bold text-white mb-8 leading-tight overflow-hidden">
               <span className="block">Find Your Perfect</span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-teal-400">
                 Code Partner
               </span>
             </h1>
-            <p className="hero-description text-xl text-purple-100 mb-12 max-w-2xl mx-auto leading-relaxed">
-              Connect with developers who share your passion for coding. Build amazing projects together and grow your skills.
-            </p>
+            
             <div className="hero-buttons flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link 
                 to="/signup" 
@@ -145,13 +127,13 @@ const Landing = () => {
         
         {/* Decorative elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-1/2 -right-1/4 w-96 h-96 bg-purple-500 rounded-full opacity-10 blur-3xl"></div>
-          <div className="absolute -bottom-1/4 -left-1/4 w-96 h-96 bg-pink-500 rounded-full opacity-10 blur-3xl"></div>
+          <div className="absolute -top-1/2 -right-1/4 w-96 h-96 bg-indigo-400 rounded-full opacity-20 blur-3xl"></div>
+          <div className="absolute -bottom-1/4 -left-1/4 w-96 h-96 bg-teal-400 rounded-full opacity-20 blur-3xl"></div>
         </div>
       </div>
 
       {/* Features */}
-      <div id="features" className="features-section py-32">
+      <div id="features" className="features-section py-32 opacity:1">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-3 gap-8">
             <div className="feature-card backdrop-blur-lg bg-white/10 p-8 rounded-2xl border border-purple-700/30 hover:border-purple-700/50 transition-all transform hover:scale-105 hover:rotate-1 shadow-xl hover:shadow-2xl">
