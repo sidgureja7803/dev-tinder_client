@@ -95,7 +95,7 @@ const FeaturesSection = () => {
 
   const features = [
     {
-      icon: "🤖",
+      icon: "🧠",
       title: "AI-Powered Matching",
       description: "Revolutionary algorithm that analyzes 50+ compatibility factors including coding style, tech preferences, career goals, and personality traits.",
       gradient: "from-purple-500 via-blue-500 to-cyan-500",
@@ -111,7 +111,7 @@ const FeaturesSection = () => {
       gradient: "from-pink-500 via-rose-500 to-red-500",
       bgGradient: "from-pink-500/20 via-rose-500/20 to-red-500/20",
       accentColor: "pink-400",
-      isPremium: true,
+      isPremium: false,
       stats: "10x faster matches"
     },
     {
@@ -121,27 +121,27 @@ const FeaturesSection = () => {
       gradient: "from-emerald-500 via-teal-500 to-cyan-500",
       bgGradient: "from-emerald-500/20 via-teal-500/20 to-cyan-500/20",
       accentColor: "emerald-400",
-      isPremium: true,
+      isPremium: false,
       stats: "5x more connections"
     },
     {
       icon: "↶",
       title: "Undo Last Swipe",
-      description: "Accidentally swiped left on your dream developer? Premium users can undo their last action and get a second chance at love.",
+      description: "Accidentally swiped left on your dream developer? Now everyone can undo their last action and get a second chance at love.",
       gradient: "from-orange-500 via-amber-500 to-yellow-500",
       bgGradient: "from-orange-500/20 via-amber-500/20 to-yellow-500/20",
       accentColor: "orange-400",
-      isPremium: true,
+      isPremium: false,
       stats: "Second chances"
     },
     {
       icon: "🚀",
       title: "Profile Boost",
-      description: "Rocket your profile to the top of the stack. Get 10x more visibility and be seen by premium developers in your area.",
+      description: "Rocket your profile to the top of the stack. Get 10x more visibility and be seen by other developers in your area.",
       gradient: "from-violet-500 via-purple-500 to-fuchsia-500",
       bgGradient: "from-violet-500/20 via-purple-500/20 to-fuchsia-500/20",
       accentColor: "violet-400",
-      isPremium: true,
+      isPremium: false,
       stats: "10x visibility"
     },
     {
@@ -151,7 +151,7 @@ const FeaturesSection = () => {
       gradient: "from-blue-500 via-indigo-500 to-purple-500",
       bgGradient: "from-blue-500/20 via-indigo-500/20 to-purple-500/20",
       accentColor: "blue-400",
-      isPremium: true,
+      isPremium: false,
       stats: "3x response rate"
     }
   ];
@@ -230,7 +230,7 @@ const FeaturesSection = () => {
               10x
             </div>
             <div className="text-gray-400 text-sm font-semibold">Faster Matches</div>
-            <div className="text-xs text-emerald-400 mt-1">⚡ Premium Speed</div>
+            <div className="text-xs text-emerald-400 mt-1">⚡ Lightning Fast</div>
           </div>
           
           <div className="text-center group hover:scale-110 transition-all duration-300">
@@ -249,15 +249,13 @@ const FeaturesSection = () => {
               key={index} 
               className={`group relative overflow-hidden rounded-3xl backdrop-blur-lg border border-white/20 hover:border-white/40 transition-all duration-700 hover:scale-105 hover:rotate-1 bg-gradient-to-br ${feature.bgGradient} hover:shadow-2xl hover:shadow-${feature.accentColor}/50`}
             >
-              {/* Premium Badge */}
-              {feature.isPremium && (
-                <div className="absolute -top-3 -right-3 z-20">
-                  <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-4 py-2 rounded-full text-xs font-black flex items-center gap-2 shadow-lg">
-                    <span className="animate-bounce">👑</span>
-                    <span>PREMIUM</span>
-                  </div>
+              {/* Free Badge - All features are free now */}
+              <div className="absolute -top-3 -right-3 z-20">
+                <div className="bg-gradient-to-r from-green-400 to-emerald-500 text-black px-4 py-2 rounded-full text-xs font-black flex items-center gap-2 shadow-lg">
+                  <span className="animate-bounce">✨</span>
+                  <span>FREE</span>
                 </div>
-              )}
+              </div>
 
               {/* Main Content */}
               <div className="relative z-10 p-8">
@@ -343,7 +341,7 @@ const FeaturesSection = () => {
                 </span>
                 <span className="flex items-center gap-1">
                   <span className="text-green-400 text-lg">✓</span>
-                  <span className="font-semibold">Premium Available</span>
+                  <span className="font-semibold">All Features Free</span>
                 </span>
               </div>
             </div>

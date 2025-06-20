@@ -6,7 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navigation from './components/Navigation';
 import HeroSection from './components/HeroSection';
 import FeaturesSection from './components/FeaturesSection';
-import PremiumSection from './components/PremiumSection';
+
 import TestimonialsSection from './components/TestimonialsSection';
 import Footer from './components/Footer';
 
@@ -97,10 +97,7 @@ const Landing = () => {
         <FeaturesSection />
       </section>
 
-      {/* Premium/Pricing Section */}
-      <section id="pricing">
-        <PremiumSection />
-      </section>
+
 
       {/* Testimonials Section */}
       <section id="testimonials">

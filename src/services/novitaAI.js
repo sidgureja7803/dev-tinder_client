@@ -19,7 +19,7 @@ Your expertise includes:
 - Developer dating advice and conversation starters
 - Tech stack compatibility and matching algorithms
 - Profile optimization for programmers
-- Premium features explanation (Gold ₹499/3mo, Platinum ₹799/6mo)
+- Free app features and functionality
 - Programming languages, frameworks, and technologies
 
 Personality traits:
@@ -83,14 +83,14 @@ Always provide helpful, relevant responses. If asked about technical implementat
       return "💬 Dating tips for developers:\n\n• Start with tech interests you share\n• Ask about their favorite projects\n• Discuss coding challenges you've solved\n• Share your learning journey\n• Don't make it all about work!\n\nRemember: You're both humans, not just code! 😊";
     }
     
-    // Premium features
-    if (lowerMessage.includes('premium') || lowerMessage.includes('gold') || lowerMessage.includes('platinum')) {
-      return "⭐ Premium Features:\n\n🥇 Gold (₹499/3mo):\n• Unlimited swipes\n• See who liked you\n• Undo swipes\n• Profile boost\n\n💎 Platinum (₹799/6mo):\n• All Gold features\n• Super likes\n• AI match suggestions\n• Priority support\n\nWorth it for serious developers! Want to upgrade?";
+    // Free app features
+    if (lowerMessage.includes('premium') || lowerMessage.includes('pricing') || lowerMessage.includes('cost') || lowerMessage.includes('free')) {
+      return "🎉 Great news! MergeMates is completely FREE! 🆓\n\n✨ Everyone gets:\n• Unlimited swipes\n• Unlimited matches\n• Real-time chat\n• AI-powered matching\n• Profile optimization tips\n• All features unlocked\n• No ads, no premium tiers\n\nNo hidden costs - just pure developer love! 💕";
     }
     
     // Technical help
     if (lowerMessage.includes('help') || lowerMessage.includes('how') || lowerMessage.includes('feature')) {
-      return "🛠️ I can help with:\n\n• Swiping & matching\n• Chat features\n• Profile settings\n• Premium benefits\n• Privacy controls\n• Account management\n\nWhat specific feature do you need help with?";
+      return "🛠️ I can help with:\n\n• Swiping & matching\n• Chat features\n• Profile settings\n• Free app features\n• Privacy controls\n• Account management\n\nWhat specific feature do you need help with?";
     }
     
     // Default responses with personality

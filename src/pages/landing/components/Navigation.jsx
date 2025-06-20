@@ -70,13 +70,7 @@ const Navigation = () => {
               Features
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-cyan-400 transition-all duration-300 group-hover:w-full"></span>
             </button>
-            <button 
-              onClick={() => scrollToSection('pricing')}
-              className="text-white hover:text-blue-300 font-medium transition-colors duration-300 relative group"
-            >
-              Pricing
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
-            </button>
+
             <button 
               onClick={() => scrollToSection('testimonials')}
               className="text-white hover:text-teal-300 font-medium transition-colors duration-300 relative group"
@@ -129,12 +123,7 @@ const Navigation = () => {
                 >
                   Features
                 </button>
-                <button 
-                  onClick={() => scrollToSection('pricing')}
-                  className="text-white hover:text-blue-300 font-medium transition-colors duration-300 py-2 text-left"
-                >
-                  Pricing
-                </button>
+
                 <button 
                   onClick={() => scrollToSection('testimonials')}
                   className="text-white hover:text-teal-300 font-medium transition-colors duration-300 py-2 text-left"

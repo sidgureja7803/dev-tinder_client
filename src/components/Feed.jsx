@@ -13,8 +13,7 @@ const Feed = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [swipeCount, setSwipeCount] = useState(0);
-  const [swipeLimit, setSwipeLimit] = useState(null);
-  const [dailyLimitReached, setDailyLimitReached] = useState(false);
+  // Removed swipe limits - app is now free for everyone
   const [lastSwipedUser, setLastSwipedUser] = useState(null);
   const user = useSelector((store) => store.user);
   const [showEditProfile, setShowEditProfile] = useState(
@@ -45,20 +44,9 @@ const Feed = () => {
         withCredentials: true
       });
       
-      if (response.data.limitReached) {
-        setDailyLimitReached(true);
-        setUsers([]);
-      } else {
-        setUsers(response.data.data || []);
-        setSwipeLimit(response.data.remaining);
-      }
+      setUsers(response.data.data || []);
     } catch (err) {
-      if (err.response?.data?.limitReached) {
-        setDailyLimitReached(true);
-        setError(err.response.data.message);
-      } else {
-        setError('Failed to fetch potential matches');
-      }
+      setError('Failed to fetch potential matches');
       console.error('Error fetching users:', err);
     } finally {
       setLoading(false);
@@ -215,15 +203,8 @@ const Feed = () => {
           showMatchAnimation(response.data.data);
         }
         
-        // Check if limit reached
-        if (response.data.limitReached) {
-          setDailyLimitReached(true);
-        }
+        // No limits - app is free
       } catch (err) {
-        if (err.response?.data?.limitReached) {
-          setDailyLimitReached(true);
-          setError(err.response.data.message);
-        }
         console.error('Error liking user:', err);
       }
     } else if (direction === 'left') {
@@ -234,11 +215,7 @@ const Feed = () => {
         );
         
         setSwipeCount(prev => prev + 1);
-        setSwipeLimit(response.data.remaining);
-        
-        if (response.data.limitReached) {
-          setDailyLimitReached(true);
-        }
+        // No limits - app is free
       } catch (err) {
         console.error('Error passing user:', err);
       }
@@ -250,7 +227,7 @@ const Feed = () => {
   };
 
   const swipe = async (dir) => {
-    if (users.length > 0 && !dailyLimitReached) {
+    if (users.length > 0) {
       const currentIndex = users.length - 1;
       if (childRefs[currentIndex]?.current) {
         await childRefs[currentIndex].current.swipe(dir);
@@ -259,11 +236,7 @@ const Feed = () => {
   };
 
   const undoLastSwipe = async () => {
-    if (!user.isPremium) {
-      alert('Undo feature is only available for premium users!');
-      return;
-    }
-    
+    // Free for everyone now!
     if (lastSwipedUser) {
       // Add the user back to the front of the stack
       setUsers(prev => [...prev, lastSwipedUser]);
@@ -297,63 +270,25 @@ const Feed = () => {
     );
   }
 
-  if (dailyLimitReached) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-purple-900 to-pink-800">
-        <Navbar />
-        <div className="container mx-auto px-4 py-8 text-center">
-          <div className="text-6xl mb-4">⏰</div>
-          <h2 className="text-3xl font-bold text-white mb-4">Daily Swipe Limit Reached!</h2>
-          <p className="text-gray-200 mb-6">
-            You've reached your daily limit of swipes. Upgrade to premium for unlimited swipes!
-          </p>
-          <div className="space-y-4">
-            <button 
-              onClick={() => window.location.href = '/app/premium'} 
-              className="btn btn-primary btn-lg"
-            >
-              Upgrade to Premium
-            </button>
-            <button 
-              onClick={() => window.location.reload()} 
-              className="btn btn-outline text-white border-white hover:bg-white hover:text-purple-900"
-            >
-              Check Again Tomorrow
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // Removed daily limit - app is free for everyone
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-900 to-pink-800">
       <Navbar />
       
-      {/* Swipe Counter */}
+      {/* Free Features Header - Responsive */}
       <div className="container mx-auto px-4 pt-4">
-        <div className="flex justify-between items-center bg-white bg-opacity-20 rounded-lg p-3 mb-4">
-          <div className="text-white">
-            <span className="font-semibold">
-              {user.isPremium ? 'Unlimited Swipes' : `${swipeLimit} swipes remaining`}
-            </span>
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-white bg-opacity-20 rounded-lg p-3 mb-4 gap-2">
+          <div className="text-white text-center sm:text-left">
+            <span className="font-semibold text-sm sm:text-base">✨ Unlimited Swipes - Completely Free!</span>
           </div>
           
-          {!user.isPremium && (
-            <button 
-              onClick={() => window.location.href = '/app/premium'}
-              className="btn btn-sm btn-primary"
-            >
-              Go Premium
-            </button>
-          )}
-          
-          {user.isPremium && lastSwipedUser && (
+          {lastSwipedUser && (
             <button 
               onClick={undoLastSwipe}
-              className="btn btn-sm btn-secondary"
+              className="btn btn-sm btn-secondary w-full sm:w-auto"
             >
-              ↶ Undo
+              ↶ Undo Last Swipe
             </button>
           )}
         </div>
@@ -365,7 +300,7 @@ const Feed = () => {
             {error}
           </div>
         ) : users.length > 0 ? (
-          <div className="relative h-[70vh] flex items-center justify-center">
+          <div className="relative h-[60vh] sm:h-[70vh] flex items-center justify-center px-2 sm:px-4">
             <div className={styles.cardContainer}>
               {users.map((currentUser, index) => {
                 const compatibility = calculateCompatibility(user, currentUser);
@@ -497,32 +432,29 @@ const Feed = () => {
               })}
             </div>
 
-            <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-4 pb-8">
+            <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-2 sm:gap-4 pb-4 sm:pb-8 px-4">
               <button
                 onClick={() => swipe('left')}
-                disabled={dailyLimitReached}
-                className="btn btn-circle btn-lg bg-red-500 hover:bg-red-600 border-none transform hover:scale-110 transition-transform disabled:opacity-50"
+                className="btn btn-circle btn-md sm:btn-lg bg-red-500 hover:bg-red-600 border-none transform hover:scale-110 transition-transform"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 sm:h-8 sm:w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
               
-              {user.isPremium && (
-                <button
-                  onClick={() => swipe('up')}
-                  className="btn btn-circle btn-lg bg-blue-500 hover:bg-blue-600 border-none transform hover:scale-110 transition-transform"
-                >
-                  ⭐
-                </button>
-              )}
+              <button
+                onClick={() => swipe('up')}
+                className="btn btn-circle btn-md sm:btn-lg bg-blue-500 hover:bg-blue-600 border-none transform hover:scale-110 transition-transform text-xs sm:text-sm"
+              >
+                <span className="hidden sm:inline">⭐ Super Like</span>
+                <span className="sm:hidden">⭐</span>
+              </button>
               
               <button
                 onClick={() => swipe('right')}
-                disabled={dailyLimitReached}
-                className="btn btn-circle btn-lg bg-green-500 hover:bg-green-600 border-none transform hover:scale-110 transition-transform disabled:opacity-50"
+                className="btn btn-circle btn-md sm:btn-lg bg-green-500 hover:bg-green-600 border-none transform hover:scale-110 transition-transform"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 sm:h-8 sm:w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
               </button>

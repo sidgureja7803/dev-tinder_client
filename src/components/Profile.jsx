@@ -255,7 +255,7 @@ const Profile = () => {
                   alt="Profile"
                   className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
                 />
-                {user?.isPremium && (
+                {true && (
                   <div className="absolute -top-2 -right-2 bg-yellow-500 rounded-full p-2">
                     <span className="text-white font-bold text-sm">👑</span>
                   </div>

@@ -301,7 +301,7 @@ const Preferences = () => {
             </div>
 
             {/* Premium Features Hint */}
-            {!user?.isPremium && (
+            {false && (
               <div className="mt-8 p-4 bg-gradient-to-r from-yellow-100 to-yellow-200 border-l-4 border-yellow-500 rounded-lg">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
