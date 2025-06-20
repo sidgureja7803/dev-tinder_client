@@ -77,8 +77,12 @@ const OTPVerification = () => {
           ease: 'power1.in'
         });
 
-        // Navigate to feed
-        navigate('/app/feed');
+        // Navigate to onboarding if profile not complete, otherwise feed
+        if (response.data.data.onboardingCompleted) {
+          navigate('/app/feed');
+        } else {
+          navigate('/onboarding');
+        }
       }
     } catch (err) {
       if (err.response?.data?.message) {

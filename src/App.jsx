@@ -12,6 +12,8 @@ import Premium from "./components/Premium";
 import Chat from "./components/Chat";
 import OTPVerification from "./components/OTPVerification";
 import ForgotPassword from "./components/ForgotPassword";
+import ProfileOnboarding from "./components/ProfileOnboarding";
+import Preferences from "./components/Preferences";
 import './firebase/config';
 
 function App() {
@@ -25,6 +27,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/verify-otp" element={<OTPVerification />} />
+          <Route path="/onboarding" element={<ProfileOnboarding />} />
           
           {/* Protected routes */}
           <Route path="/app">
@@ -34,6 +37,7 @@ function App() {
             <Route path="connections" element={<Connections />} />
             <Route path="requests" element={<Requests />} />
             <Route path="premium" element={<Premium />} />
+            <Route path="preferences" element={<Preferences />} />
             <Route path="chat/:targetUserId" element={<Chat />} />
           </Route>
 
