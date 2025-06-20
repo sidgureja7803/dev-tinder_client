@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { BASE_URL } from '../utils/constants';
@@ -12,18 +12,16 @@ const Feed = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [swipeCount, setSwipeCount] = useState(0);
   // Removed swipe limits - app is now free for everyone
   const [lastSwipedUser, setLastSwipedUser] = useState(null);
   const user = useSelector((store) => store.user);
-  const [showEditProfile, setShowEditProfile] = useState(
+  const [showEditProfile] = useState(
     !user?.about || !user?.age || !user?.gender || !user?.profileComplete
   );
-  const [matchResult, setMatchResult] = useState(null);
 
   // Create refs array for each card
   const childRefs = useMemo(
-    () => Array(users.length).fill(0).map(i => React.createRef()),
+    () => Array(users.length).fill(0).map(() => React.createRef()),
     [users.length]
   );
 
@@ -174,7 +172,6 @@ const Feed = () => {
         duration: 0.3,
         onComplete: () => {
           document.body.removeChild(matchModal);
-          setMatchResult(null);
         }
       });
     });
@@ -195,9 +192,6 @@ const Feed = () => {
           { withCredentials: true }
         );
         
-        setSwipeCount(prev => prev + 1);
-        setSwipeLimit(response.data.remaining);
-        
         // Check if it's a match
         if (response.data.data && response.data.data.matchId) {
           showMatchAnimation(response.data.data);
@@ -207,14 +201,13 @@ const Feed = () => {
       } catch (err) {
         console.error('Error liking user:', err);
       }
-    } else if (direction === 'left') {
+          } else if (direction === 'left') {
       try {
-        const response = await axios.post(`${BASE_URL}/match/swipe/${userId}`, 
+        await axios.post(`${BASE_URL}/match/swipe/${userId}`, 
           { action: 'pass' }, 
           { withCredentials: true }
         );
         
-        setSwipeCount(prev => prev + 1);
         // No limits - app is free
       } catch (err) {
         console.error('Error passing user:', err);
