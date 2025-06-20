@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BASE_URL } from '../utils/constants';
 import Navbar from './NavBar';
@@ -15,6 +16,7 @@ const Feed = () => {
   // Removed swipe limits - app is now free for everyone
   const [lastSwipedUser, setLastSwipedUser] = useState(null);
   const user = useSelector((store) => store.user);
+  const navigate = useNavigate();
   const [showEditProfile] = useState(
     !user?.about || !user?.age || !user?.gender || !user?.profileComplete
   );
@@ -44,7 +46,16 @@ const Feed = () => {
       
       setUsers(response.data.data || []);
     } catch (err) {
-      setError('Failed to fetch potential matches');
+      // Check if user needs to complete onboarding
+      if (err.response?.status === 400 && err.response?.data?.redirectTo === '/onboarding') {
+        setError('Please complete your profile first');
+        // Redirect to onboarding after a short delay
+        setTimeout(() => {
+          navigate('/app/onboarding');
+        }, 2000);
+      } else {
+        setError('Failed to fetch potential matches');
+      }
       console.error('Error fetching users:', err);
     } finally {
       setLoading(false);
