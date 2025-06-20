@@ -101,8 +101,8 @@ const Footer = () => {
             {/* Brand Section */}
             <div className="lg:col-span-2 space-y-6">
               <div className="flex items-center">
-                <span className="text-3xl font-bold bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                  DevTinder
+                <span className="text-3xl font-bold bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent">
+                  MergeMates
                 </span>
                 <div className="ml-2 w-2 h-2 bg-pink-500 rounded-full animate-pulse"></div>
               </div>
@@ -173,7 +173,7 @@ const Footer = () => {
                   Get the Mobile App
                 </h3>
                 <p className="text-gray-300">
-                  Take DevTinder with you. Available on iOS and Android.
+                  Take MergeMates with you. Available on iOS and Android.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -222,7 +222,7 @@ const Footer = () => {
           {/* Bottom Section */}
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8">
             <div className="text-gray-400 text-sm">
-              © 2025 DevTinder. All rights reserved. Made with ❤️ for developers.
+              © 2025 MergeMates. All rights reserved. Made with ❤️ for developers.
             </div>
             
             <div className="flex items-center gap-6">

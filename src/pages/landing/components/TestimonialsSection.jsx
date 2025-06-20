@@ -81,7 +81,7 @@ const TestimonialsSection = () => {
       role: "Full Stack Developer",
       company: "Netflix",
       image: "👩‍💻",
-      content: "I met my coding soulmate on DevTinder! We bonded over our shared love for React and now we're building an amazing life together. Our first date was debugging code at a coffee shop! 😄",
+      content: "I met my coding soulmate on MergeMates! We bonded over our shared love for React and now we're building an amazing life together. Our first date was debugging code at a coffee shop! 😄",
       techStack: ["React", "Node.js", "MongoDB"],
       rating: 5,
       gradient: "from-pink-500 to-purple-500"
@@ -91,7 +91,7 @@ const TestimonialsSection = () => {
       role: "DevOps Engineer",
       company: "Spotify",
       image: "👨‍💻",
-      content: "DevTinder helped me find someone who understands my passion for automation and clean architecture. We've been together for 2 years and just launched our first startup together!",
+      content: "MergeMates helped me find someone who understands my passion for automation and clean architecture. We've been together for 2 years and just launched our first startup together!",
       techStack: ["Docker", "Kubernetes", "AWS"],
       rating: 5,
       gradient: "from-cyan-500 to-blue-500"
@@ -101,7 +101,7 @@ const TestimonialsSection = () => {
       role: "Frontend Developer",
       company: "Stripe",
       image: "👩‍🎨",
-      content: "After years of failed dates where I had to explain what I do, DevTinder was a breath of fresh air. My partner and I code together, travel together, and dream together. Perfect match!",
+      content: "After years of failed dates where I had to explain what I do, MergeMates was a breath of fresh air. My partner and I code together, travel together, and dream together. Perfect match!",
       techStack: ["Vue.js", "TypeScript", "Figma"],
       rating: 5,
       gradient: "from-green-500 to-teal-500"
@@ -111,7 +111,7 @@ const TestimonialsSection = () => {
       role: "Data Scientist",
       company: "Airbnb",
       image: "👨‍🔬",
-      content: "Finding someone who appreciates both late-night coding sessions and data visualizations seemed impossible. DevTinder made it happen! We're getting married next month! 💍",
+      content: "Finding someone who appreciates both late-night coding sessions and data visualizations seemed impossible. MergeMates made it happen! We're getting married next month! 💍",
       techStack: ["Python", "TensorFlow", "Jupyter"],
       rating: 5,
       gradient: "from-yellow-500 to-orange-500"
@@ -121,7 +121,7 @@ const TestimonialsSection = () => {
       role: "Mobile Developer",
       company: "Uber",
       image: "👩‍💼",
-      content: "DevTinder's matching algorithm is genius! It paired me with someone who shares my mobile development passion. We've shipped 3 apps together and countless memories! 🚀",
+      content: "MergeMates' matching algorithm is genius! It paired me with someone who shares my mobile development passion. We've shipped 3 apps together and countless memories! 🚀",
       techStack: ["React Native", "Swift", "Kotlin"],
       rating: 5,
       gradient: "from-purple-500 to-pink-500"
@@ -131,7 +131,7 @@ const TestimonialsSection = () => {
       role: "Backend Engineer",
       company: "GitHub",
       image: "👨‍💻",
-      content: "I was skeptical about dating apps, but DevTinder gets developers. Met my girlfriend here 18 months ago - she's a frontend dev and we're the perfect full-stack couple! 😍",
+      content: "I was skeptical about dating apps, but MergeMates gets developers. Met my girlfriend here 18 months ago - she's a frontend dev and we're the perfect full-stack couple! 😍",
       techStack: ["Go", "PostgreSQL", "Redis"],
       rating: 5,
       gradient: "from-indigo-500 to-purple-500"
@@ -171,7 +171,7 @@ const TestimonialsSection = () => {
           </h2>
           
           <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Real developers, real connections, real love. See how DevTinder has helped 
+            Real developers, real connections, real love. See how MergeMates has helped 
             <span className="block mt-2 text-pink-400 font-semibold">
               thousands of developers find their perfect match! 💕
             </span>

@@ -51,7 +51,7 @@ const NavBar = () => {
           <div className="flex items-center">
             <Link to="/app/feed" className="flex items-center space-x-2">
               <span className="text-2xl">👩‍💻</span>
-              <span className="font-bold text-xl">DevTinder</span>
+              <span className="font-bold text-xl">MergeMates</span>
             </Link>
           </div>
 

@@ -1,7 +1,7 @@
-# DevTinder Environment Setup Guide
+# MergeMates Environment Setup Guide
 
 ## Overview
-This guide explains how to set up environment variables for both the frontend (client) and backend (server) of DevTinder.
+This guide explains how to set up environment variables for both the frontend (client) and backend (server) of MergeMates.
 
 ## Quick Setup
 
@@ -28,6 +28,7 @@ Edit both `.env` files with your actual credentials and configuration.
 - `JWT_SECRET` - Secret key for JWT tokens
 - `EMAIL_USER` & `EMAIL_PASSWORD` - Gmail SMTP for OTP emails
 - `RAZORPAY_KEY_ID` & `RAZORPAY_KEY_SECRET` - Payment processing
+- `NOVITA_AI_API_KEY` - Novita AI API key for backend AI services
 - Firebase Admin SDK variables (see Firebase setup section)
 
 ### Frontend (client/.env)
@@ -35,6 +36,7 @@ Edit both `.env` files with your actual credentials and configuration.
 - All `VITE_FIREBASE_*` variables - Firebase client configuration
 - `VITE_API_BASE_URL` - Backend API URL
 - `VITE_RAZORPAY_KEY_ID` - Razorpay publishable key
+- `VITE_NOVITA_AI_API_KEY` - Novita AI API key for chatbot and matchmaking
 
 ## Firebase Configuration
 
@@ -80,6 +82,17 @@ const firebaseConfig = {
 }
 ```
 
+## AI Services Setup (Novita AI)
+
+1. Create account at [Novita AI](https://novita.ai/)
+2. Go to Dashboard → API Keys
+3. Generate API key for Llama-3.1-70B model
+4. Add to both frontend and backend `.env`:
+   - Backend: `NOVITA_AI_API_KEY=your_api_key`
+   - Frontend: `VITE_NOVITA_AI_API_KEY=your_api_key`
+   - Both: Use base URL `https://api.novita.ai/v3/openai`
+   - Both: Use model `meta-llama/llama-3.1-70b-instruct`
+
 ## Payment Setup (Razorpay)
 
 1. Create account at [Razorpay](https://razorpay.com/)
@@ -104,12 +117,12 @@ const firebaseConfig = {
 
 ### Local MongoDB:
 ```
-DB_CONNECTION_SECRET=mongodb://localhost:27017/devtinder
+DB_CONNECTION_SECRET=mongodb://localhost:27017/mergemates
 ```
 
 ### MongoDB Atlas:
 ```
-DB_CONNECTION_SECRET=mongodb+srv://username:password@cluster.mongodb.net/devtinder
+DB_CONNECTION_SECRET=mongodb+srv://username:password@cluster.mongodb.net/mergemates
 ```
 
 ## Development vs Production

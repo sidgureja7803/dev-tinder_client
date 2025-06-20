@@ -67,21 +67,21 @@ const Landing = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-900 via-slate-900 to-black">
+    <div className="min-h-screen bg-gradient-to-b from-indigo-900 via-slate-900 to-black">
       
       {/* Loading Screen */}
-      <div className="loading-screen fixed inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 z-50 flex items-center justify-center">
+      <div className="loading-screen fixed inset-0 bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900 z-50 flex items-center justify-center">
         <div className="text-center">
           <div className="relative mb-8">
-            <span className="text-5xl font-bold bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-              DevTinder
-            </span>
-            <div className="absolute -top-2 -right-2 w-3 h-3 bg-pink-500 rounded-full animate-pulse"></div>
+                          <span className="text-5xl font-bold bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent">
+                MergeMates
+              </span>
+            <div className="absolute -top-2 -right-2 w-3 h-3 bg-cyan-500 rounded-full animate-pulse"></div>
           </div>
           <div className="flex items-center justify-center gap-2">
-            <div className="w-2 h-2 bg-pink-400 rounded-full animate-bounce"></div>
-            <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-            <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+            <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
+            <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+            <div className="w-2 h-2 bg-teal-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
           </div>
         </div>
       </div>
@@ -108,12 +108,12 @@ const Landing = () => {
       </section>
 
       {/* Final Call to Action */}
-      <section className="py-24 bg-gradient-to-r from-pink-600/20 via-purple-600/20 to-cyan-600/20">
+      <section className="py-24 bg-gradient-to-r from-blue-600/20 via-indigo-600/20 to-cyan-600/20">
         <div className="container mx-auto px-6 text-center">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-8">
               Your Perfect Match is 
-              <span className="block bg-gradient-to-r from-pink-400 to-cyan-400 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
                 One Swipe Away
               </span>
             </h2>
@@ -126,13 +126,13 @@ const Landing = () => {
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
               <a 
                 href="/signup"
-                className="group relative px-12 py-5 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold rounded-2xl text-xl transition-all duration-300 hover:from-pink-600 hover:to-purple-700 hover:scale-110 hover:shadow-2xl hover:shadow-pink-500/25"
+                className="group relative px-12 py-5 bg-gradient-to-r from-blue-500 to-cyan-600 text-white font-bold rounded-2xl text-xl transition-all duration-300 hover:from-blue-600 hover:to-cyan-700 hover:scale-110 hover:shadow-2xl hover:shadow-blue-500/25"
               >
                 <span className="relative z-10 flex items-center gap-3">
                   <span>Start For Free</span>
                   <span className="text-2xl">🚀</span>
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-pink-400 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
               </a>
               
               <div className="text-center">
@@ -153,19 +153,19 @@ const Landing = () => {
             {/* Final Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto">
               <div className="text-center">
-                <div className="text-3xl font-bold text-pink-400 mb-2">50K+</div>
+                <div className="text-3xl font-bold text-blue-400 mb-2">50K+</div>
                 <div className="text-gray-400 text-sm">Active Developers</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-purple-400 mb-2">2.5K+</div>
+                <div className="text-3xl font-bold text-cyan-400 mb-2">2.5K+</div>
                 <div className="text-gray-400 text-sm">Success Stories</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-cyan-400 mb-2">156</div>
+                <div className="text-3xl font-bold text-teal-400 mb-2">156</div>
                 <div className="text-gray-400 text-sm">Tech Weddings</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-green-400 mb-2">4.9★</div>
+                <div className="text-3xl font-bold text-indigo-400 mb-2">4.9★</div>
                 <div className="text-gray-400 text-sm">User Rating</div>
               </div>
             </div>
@@ -176,16 +176,7 @@ const Landing = () => {
       {/* Footer */}
       <Footer />
 
-      {/* Floating Action Button */}
-      <div className="fixed bottom-8 right-8 z-40">
-        <a
-          href="/signup"
-          className="group w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center shadow-2xl hover:shadow-pink-500/50 transition-all duration-300 hover:scale-110"
-          title="Sign Up Now"
-        >
-          <span className="text-2xl group-hover:animate-pulse">💕</span>
-        </a>
-      </div>
+
 
       {/* Back to Top Button */}
       <button

@@ -154,15 +154,35 @@ const Premium = () => {
 
   const getAISuggestions = async () => {
     try {
-      const res = await axios.get(BASE_URL + "/premium/ai-suggestions", {
+      const res = await axios.get(BASE_URL + "/feed/ai-insights", {
         withCredentials: true,
       });
       
-      // Navigate to AI suggestions page or show modal
-      console.log('AI Suggestions:', res.data.data);
-      alert('AI suggestions feature coming soon!');
+      // Create a nice modal display for AI insights
+      const insights = res.data.insights;
+      const topMatches = res.data.topMatches;
+      
+      // For now, show in an alert - could be enhanced with a proper modal
+      let message = `🤖 AI Matchmaking Insights:\n\n${insights}\n\n`;
+      
+      if (topMatches.length > 0) {
+        message += `🎯 Top Compatible Matches:\n`;
+        topMatches.forEach((match, index) => {
+          message += `${index + 1}. ${match.user.firstName} - ${match.compatibility}% compatible\n`;
+          if (match.commonSkills.length > 0) {
+            message += `   Shared: ${match.commonSkills.join(', ')}\n`;
+          }
+        });
+      }
+      
+      alert(message);
     } catch (err) {
       console.error('Error getting AI suggestions:', err);
+      if (err.response?.data?.upgradeRequired) {
+        alert('AI insights are a premium feature! Upgrade to Gold or Platinum to access personalized matchmaking recommendations.');
+      } else {
+        alert('Error getting AI suggestions. Please try again.');
+      }
     }
   };
 

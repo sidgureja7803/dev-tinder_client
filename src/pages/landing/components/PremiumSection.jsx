@@ -95,7 +95,7 @@ const PremiumSection = () => {
       price: "₹0",
       period: "Forever",
       originalPrice: null,
-      description: "Perfect for exploring DevTinder",
+              description: "Perfect for exploring MergeMates",
       gradient: "from-gray-600 via-slate-600 to-gray-700",
       bgGradient: "from-gray-800/50 via-slate-800/50 to-gray-900/50",
       borderGradient: "from-gray-500/50 to-slate-500/50",
@@ -411,7 +411,7 @@ const PremiumSection = () => {
             <h3 className="text-4xl md:text-5xl font-black text-white mb-6">
               Why Premium Developers
               <span className="block bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
-                Choose DevTinder Pro
+                Choose MergeMates Pro
               </span>
             </h3>
           </div>
