@@ -126,7 +126,6 @@ const HeroSection = () => {
                    <span className="text-blue-400 font-black absolute">Love</span>
                    <span className="text-cyan-400 font-black absolute opacity-0">Partners</span>
                    <span className="text-teal-400 font-black absolute opacity-0">Soulmates</span>
-                   <span className="text-indigo-400 font-black absolute opacity-0">Connections</span>
                    <span className="text-sky-400 font-black absolute opacity-0">Dreams</span>
                  </div>
                </div>
