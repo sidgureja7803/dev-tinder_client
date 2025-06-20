@@ -2,13 +2,13 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBjgND-PsNuHu9Ojnnn2Qe2NMvjKuT6b8A",
-  authDomain: "devtinder-e1df5.firebaseapp.com",
-  projectId: "devtinder-e1df5",
-  storageBucket: "devtinder-e1df5.firebasestorage.app",
-  messagingSenderId: "354337159305",
-  appId: "1:354337159305:web:d051853aefd481dfcbee58",
-  measurementId: "G-95MHHQMHBX"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
