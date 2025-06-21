@@ -11,6 +11,9 @@ const Login = () => {
     password: ''
   });
   const [error, setError] = useState('');
+  const [showPasswordFix, setShowPasswordFix] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [fixMessage, setFixMessage] = useState('');
 
   const handleChange = (e) => {
     setFormData({
@@ -22,6 +25,10 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    
+    // DEBUG: Log what we're sending
+    console.log('🚀 Sending login data:', formData);
+    console.log('📍 API URL:', `${BASE_URL}/login`);
     
     try {
       const response = await axios.post(`${BASE_URL}/login`, formData);
@@ -53,7 +60,33 @@ const Login = () => {
         navigate('/verify-otp', { state: { email: err.response.data.emailId } });
         return;
       }
-      setError(err.response?.data?.message || 'Login failed. Please try again.');
+      
+      // If login fails due to password issues, show password fix option
+      if (err.response?.status === 401) {
+        setError('Login failed. If you created your account before today, you might need to reset your password due to security improvements.');
+        setShowPasswordFix(true);
+      } else {
+        setError(err.response?.data?.message || 'Login failed. Please try again.');
+      }
+    }
+  };
+
+  const handlePasswordFix = async (e) => {
+    e.preventDefault();
+    setFixMessage('');
+    
+    try {
+      const response = await axios.post(`${BASE_URL}/fix-password`, {
+        emailId: formData.emailId,
+        newPassword: newPassword
+      });
+      
+      setFixMessage('✅ ' + response.data.message);
+      setShowPasswordFix(false);
+      setFormData({ ...formData, password: newPassword });
+      setNewPassword('');
+    } catch (err) {
+      setFixMessage('❌ ' + (err.response?.data?.message || 'Failed to update password'));
     }
   };
 
@@ -78,6 +111,7 @@ const Login = () => {
           <p className="form-subtitle">Sign in to continue your developer journey</p>
           
           {error && <div className="error-message">{error}</div>}
+          {fixMessage && <div className={fixMessage.startsWith('✅') ? 'success-message' : 'error-message'}>{fixMessage}</div>}
           
           <div className="form-group">
             <label htmlFor="email">Email</label>
@@ -120,6 +154,32 @@ const Login = () => {
           </div>
           
           <button type="submit" className="auth-button">Sign In</button>
+          
+          {showPasswordFix && (
+            <div className="password-fix-section">
+              <h3>Reset Your Password</h3>
+              <p>Due to security improvements, you need to reset your password:</p>
+              <form onSubmit={handlePasswordFix}>
+                <div className="form-group">
+                  <label htmlFor="newPassword">New Password</label>
+                  <div className="input-container">
+                    <i className="fas fa-key"></i>
+                    <input
+                      type="password"
+                      id="newPassword"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      placeholder="Enter new password"
+                      required
+                    />
+                  </div>
+                </div>
+                <button type="submit" className="auth-button" style={{backgroundColor: '#28a745'}}>
+                  Update Password
+                </button>
+              </form>
+            </div>
+          )}
           
           <div className="auth-divider">
             <span>or</span>
