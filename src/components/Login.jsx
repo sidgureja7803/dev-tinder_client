@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { BASE_URL } from '../utils/constants';
 import '../styles/auth.css';
 
 const Login = () => {
@@ -23,10 +24,35 @@ const Login = () => {
     setError('');
     
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/login', formData);
-      localStorage.setItem('token', response.data.token);
-      navigate('/dashboard');
+      const response = await axios.post(`${BASE_URL}/login`, formData);
+      
+      if (response.data.data) {
+        const userData = response.data.data;
+        
+        // Store user data in localStorage
+        localStorage.setItem('token', 'logged-in'); // Simple token for now
+        localStorage.setItem('user', JSON.stringify(userData));
+        
+        // Check if user needs verification
+        if (response.data.requiresVerification) {
+          navigate('/verify-otp', { state: { email: userData.emailId } });
+          return;
+        }
+        
+        // Check if user needs onboarding
+        if (userData.requiresOnboarding) {
+          navigate('/onboarding');
+          return;
+        }
+        
+        // Navigate to main app
+        navigate('/app/feed');
+      }
     } catch (err) {
+      if (err.response?.data?.requiresVerification) {
+        navigate('/verify-otp', { state: { email: err.response.data.emailId } });
+        return;
+      }
       setError(err.response?.data?.message || 'Login failed. Please try again.');
     }
   };

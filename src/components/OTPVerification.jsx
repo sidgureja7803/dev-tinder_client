@@ -3,11 +3,13 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { BASE_URL } from '../utils/constants';
 import { gsap } from 'gsap';
+import '../styles/auth.css';
 
 const OTPVerification = () => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [resendMessage, setResendMessage] = useState('');
   const inputRefs = useRef([]);
   const navigate = useNavigate();
   const location = useLocation();
@@ -20,7 +22,7 @@ const OTPVerification = () => {
     }
 
     // Animate the component
-    gsap.from('.otp-container', {
+    gsap.from('.auth-form-container', {
       opacity: 0,
       y: 30,
       duration: 0.8,
@@ -66,22 +68,28 @@ const OTPVerification = () => {
 
       if (response.data.data) {
         // Show success animation
-        await gsap.to('.otp-container', {
+        await gsap.to('.auth-form', {
           scale: 1.05,
           duration: 0.2,
           ease: 'power1.out'
         });
-        await gsap.to('.otp-container', {
+        await gsap.to('.auth-form', {
           scale: 1,
           duration: 0.2,
           ease: 'power1.in'
         });
 
-        // Navigate to onboarding if profile not complete, otherwise feed
-        if (response.data.data.onboardingCompleted) {
-          navigate('/app/feed');
-        } else {
+        // Store user data
+        if (response.data.data) {
+          localStorage.setItem('user', JSON.stringify(response.data.data));
+          localStorage.setItem('token', 'logged-in');
+        }
+
+        // Navigate based on onboarding status
+        if (response.data.data.requiresOnboarding) {
           navigate('/onboarding');
+        } else {
+          navigate('/app/feed');
         }
       }
     } catch (err) {
@@ -99,16 +107,12 @@ const OTPVerification = () => {
     try {
       await axios.post(`${BASE_URL}/resend-otp`, { emailId: email });
       setError('');
-      // Show success message
-      gsap.to('.resend-message', {
-        opacity: 1,
-        duration: 0.3,
-        onComplete: () => {
-          setTimeout(() => {
-            gsap.to('.resend-message', { opacity: 0, duration: 0.3 });
-          }, 3000);
-        }
-      });
+      setResendMessage('OTP has been resent successfully!');
+      
+      // Clear message after 3 seconds
+      setTimeout(() => {
+        setResendMessage('');
+      }, 3000);
     } catch (err) {
       if (err.response?.data?.message) {
         setError(err.response.data.message);
@@ -119,52 +123,62 @@ const OTPVerification = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-purple-900 to-pink-800 px-4">
-      <div className="otp-container bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md">
-        <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">Verify Your Email</h2>
-        <p className="text-center text-gray-600 mb-8">
-          We've sent a verification code to<br />
-          <span className="font-semibold">{email}</span>
-        </p>
-
-        <div className="flex justify-center gap-2 mb-8">
-          {otp.map((digit, index) => (
-            <input
-              key={index}
-              ref={el => inputRefs.current[index] = el}
-              type="text"
-              maxLength="1"
-              value={digit}
-              onChange={e => handleChange(index, e.target.value)}
-              onKeyDown={e => handleKeyDown(index, e)}
-              className="w-12 h-12 text-center text-2xl font-bold border-2 rounded-lg focus:border-purple-500 focus:outline-none"
-            />
-          ))}
+    <div className="auth-container">
+      <div className="auth-background">
+        <div className="shape"></div>
+        <div className="shape"></div>
+        <div className="code-pattern"></div>
+      </div>
+      <div className="auth-form-container">
+        <div className="logo-container">
+          <svg width="40" height="40" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">          
+            <circle cx="16" cy="16" r="16" fill="#e91e63"/>
+            <path d="M16 24l-6.5-6.5c-1.5-1.5-1.5-4 0-5.5s4-1.5 5.5 0l1 1 1-1c1.5-1.5 4-1.5 5.5 0s1.5 4 0 5.5L16 24z" fill="white"/>
+            <path d="M8 10l-2 2 2 2M24 10l2 2-2 2" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h1>Merge Mates</h1>
         </div>
+        <div className="auth-form">
+          <h2>Verify Your Email</h2>
+          <p className="form-subtitle">
+            We've sent a verification code to<br />
+            <strong>{email}</strong>
+          </p>
 
-        {error && (
-          <p className="text-red-500 text-center mb-4">{error}</p>
-        )}
+          <div className="otp-container">
+            {otp.map((digit, index) => (
+              <input
+                key={index}
+                ref={el => inputRefs.current[index] = el}
+                type="text"
+                maxLength="1"
+                value={digit}
+                onChange={e => handleChange(index, e.target.value)}
+                onKeyDown={e => handleKeyDown(index, e)}
+                className="otp-input"
+              />
+            ))}
+          </div>
 
-        <div className="space-y-4">
+          {error && <div className="error-message">{error}</div>}
+          {resendMessage && <div className="success-message">{resendMessage}</div>}
+
           <button
             onClick={handleVerify}
             disabled={loading}
-            className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-semibold hover:opacity-90 transition-all disabled:opacity-50"
+            className="auth-button"
           >
             {loading ? 'Verifying...' : 'Verify OTP'}
           </button>
 
-          <div className="text-center">
+          <div className="resend-container">
+            <p>Didn't receive the code?</p>
             <button
               onClick={handleResendOTP}
-              className="text-purple-600 hover:text-purple-700 font-medium"
+              className="resend-button"
             >
               Resend OTP
             </button>
-            <p className="resend-message text-green-500 mt-2 opacity-0">
-              OTP has been resent successfully!
-            </p>
           </div>
         </div>
       </div>

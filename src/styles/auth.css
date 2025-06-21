@@ -155,6 +155,7 @@ body {
   margin-bottom: 1.5rem;
 }
 
+/* Form group styling */
 .form-group {
   margin-bottom: 1.25rem;
 }
@@ -164,6 +165,14 @@ body {
   font-weight: 500;
   margin-bottom: 0.5rem;
   color: white;
+}
+
+/* Form row for side-by-side inputs */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .input-container {
@@ -198,6 +207,64 @@ body {
   border-color: var(--primary-color);
   box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.3);
   background: rgba(255, 255, 255, 0.15);
+}
+
+/* Password toggle button */
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.password-toggle:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Password requirements */
+.password-requirements {
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.requirement-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 0.25rem;
+}
+
+.requirement-item:last-child {
+  margin-bottom: 0;
+}
+
+.requirement-item i {
+  color: #ff6b6b;
+  font-size: 0.7rem;
+}
+
+/* Password mismatch */
+.password-mismatch {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #ff6b6b;
+}
+
+.password-mismatch i {
+  font-size: 0.7rem;
 }
 
 /* Error message */
@@ -244,22 +311,31 @@ body {
 /* Terms */
 .terms-container {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 1.5rem;
   font-size: 0.875rem;
   color: rgba(255, 255, 255, 0.8);
+  gap: 0.5rem;
 }
 
 .terms-container input {
-  margin-right: 0.5rem;
+  margin-top: 0.2rem;
+  flex-shrink: 0;
 }
 
-.terms-container a {
+.terms-container label {
+  line-height: 1.4;
+  margin-bottom: 0;
+}
+
+.terms-link {
   color: var(--primary-color);
   text-decoration: none;
+  transition: color 0.3s;
 }
 
-.terms-container a:hover {
+.terms-link:hover {
+  color: var(--primary-hover);
   text-decoration: underline;
 }
 
@@ -379,6 +455,11 @@ body {
   .auth-form {
     padding: 1.5rem;
   }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
 }
 
 @media (max-width: 480px) {
@@ -395,4 +476,84 @@ body {
   .auth-form h2 {
     font-size: 1.5rem;
   }
+
+  .otp-container {
+    gap: 0.5rem;
+  }
+
+  .otp-input {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.25rem;
+  }
+}
+
+/* Success message */
+.success-message {
+  background-color: rgba(56, 161, 105, 0.2);
+  color: #9ae6b4;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.875rem;
+  border: 1px solid rgba(56, 161, 105, 0.3);
+  text-align: center;
+}
+
+/* OTP Verification specific styles */
+.otp-container {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 2rem 0;
+}
+
+.otp-input {
+  width: 3rem;
+  height: 3rem;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  transition: all 0.3s;
+}
+
+.otp-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.otp-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Resend container */
+.resend-container {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.resend-container p {
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.resend-button {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.3s;
+}
+
+.resend-button:hover {
+  color: var(--primary-hover);
 }
