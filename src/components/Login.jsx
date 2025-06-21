@@ -7,7 +7,7 @@ import '../styles/auth.css';
 const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: '',
+    emailId: '',
     password: ''
   });
   const [error, setError] = useState('');
@@ -86,8 +86,8 @@ const Login = () => {
               <input
                 type="email"
                 id="email"
-                name="email"
-                value={formData.email}
+                name="emailId"
+                value={formData.emailId}
                 onChange={handleChange}
                 placeholder="you@example.com"
                 required
