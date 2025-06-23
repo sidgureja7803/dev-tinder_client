@@ -112,6 +112,8 @@ const Signup = () => {
               if (res.data.data) {
                 dispatch(addUser(res.data.data));
               }
+              // Store email in localStorage as backup
+              localStorage.setItem('pendingEmail', emailId);
               navigate("/verify-otp", { state: { email: emailId } });
             }
           });
@@ -191,7 +193,7 @@ const Signup = () => {
           <svg width="40" height="40" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">          
             <circle cx="16" cy="16" r="16" fill="#e91e63"/>
             <path d="M16 24l-6.5-6.5c-1.5-1.5-1.5-4 0-5.5s4-1.5 5.5 0l1 1 1-1c1.5-1.5 4-1.5 5.5 0s1.5 4 0 5.5L16 24z" fill="white"/>
-            <path d="M8 10l-2 2 2 2M24 10l2 2-2 2" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 10l-2 2 2 2M24 10l2 2-2 2" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
           <h1>Merge Mates</h1>
         </div>

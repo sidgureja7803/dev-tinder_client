@@ -10,25 +10,37 @@ const OTPVerification = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [resendMessage, setResendMessage] = useState('');
+  const [isInitialized, setIsInitialized] = useState(false);
   const inputRefs = useRef([]);
   const navigate = useNavigate();
   const location = useLocation();
-  const email = location.state?.email;
+  const email = location.state?.email || localStorage.getItem('pendingEmail');
 
   useEffect(() => {
-    if (!email) {
-      navigate('/signup');
-      return;
-    }
+    console.log('🔍 OTP Verification - Email from state:', email);
+    console.log('🔍 Location state:', location.state);
+    console.log('🔍 Pending email from localStorage:', localStorage.getItem('pendingEmail'));
+    
+    // Give some time for the component to mount properly
+    setTimeout(() => {
+      if (!email) {
+        console.log('❌ No email found after initialization, redirecting to signup...');
+        navigate('/signup');
+        return;
+      }
 
-    // Animate the component
-    gsap.from('.auth-form-container', {
-      opacity: 0,
-      y: 30,
-      duration: 0.8,
-      ease: 'power3.out'
-    });
-  }, [email, navigate]);
+      console.log('✅ Email found, initializing component...');
+      setIsInitialized(true);
+      
+      // Animate the component
+      gsap.from('.auth-form-container', {
+        opacity: 0,
+        y: 30,
+        duration: 0.8,
+        ease: 'power3.out'
+      });
+    }, 200);
+  }, [email, navigate, location.state]);
 
   const handleChange = (index, value) => {
     if (isNaN(value)) return;
@@ -57,6 +69,10 @@ const OTPVerification = () => {
       return;
     }
 
+    console.log('🚀 Verifying OTP for email:', email);
+    console.log('🚀 OTP:', otpString);
+    console.log('🚀 API URL:', `${BASE_URL}/verify-otp`);
+
     setLoading(true);
     setError('');
 
@@ -79,10 +95,11 @@ const OTPVerification = () => {
           ease: 'power1.in'
         });
 
-        // Store user data
+        // Store user data and clear pending email
         if (response.data.data) {
           localStorage.setItem('user', JSON.stringify(response.data.data));
           localStorage.setItem('token', 'logged-in');
+          localStorage.removeItem('pendingEmail'); // Clear the backup email
         }
 
         // Navigate based on onboarding status
@@ -122,6 +139,25 @@ const OTPVerification = () => {
     }
   };
 
+  // Don't render until initialized to prevent flash/redirect
+  if (!isInitialized && !email) {
+    return (
+      <div className="auth-container">
+        <div className="auth-background">
+          <div className="shape"></div>
+          <div className="shape"></div>
+          <div className="code-pattern"></div>
+        </div>
+        <div className="auth-form-container">
+          <div className="auth-form">
+            <h2>Loading...</h2>
+            <p className="form-subtitle">Initializing verification...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="auth-container">
       <div className="auth-background">
@@ -134,7 +170,7 @@ const OTPVerification = () => {
           <svg width="40" height="40" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">          
             <circle cx="16" cy="16" r="16" fill="#e91e63"/>
             <path d="M16 24l-6.5-6.5c-1.5-1.5-1.5-4 0-5.5s4-1.5 5.5 0l1 1 1-1c1.5-1.5 4-1.5 5.5 0s1.5 4 0 5.5L16 24z" fill="white"/>
-            <path d="M8 10l-2 2 2 2M24 10l2 2-2 2" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 10l-2 2 2 2M24 10l2 2-2 2" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
           <h1>Merge Mates</h1>
         </div>
