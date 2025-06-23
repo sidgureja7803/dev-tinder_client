@@ -5,6 +5,7 @@ import { BASE_URL } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { gsap } from "gsap";
+import ImageUpload from "./ImageUpload";
 
 const ProfileOnboarding = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -738,31 +739,16 @@ const ProfileOnboarding = () => {
       case 4: // Photos
         return (
           <div className="space-y-6 step-content">
-            <div className="text-center">
-              <div className="mb-6">
-                <h3 className="text-xl font-semibold text-white mb-2">Add Your Photos</h3>
-                <p className="text-white/60">Upload at least one photo to continue</p>
-              </div>
-              
-              <div className="bg-white/5 border-2 border-dashed border-white/20 rounded-xl p-8 hover:border-pink-400 transition-colors duration-300">
-                <div className="text-center">
-                  <svg className="mx-auto h-12 w-12 text-white/40" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                  <div className="mt-4">
-                    <button
-                      type="button"
-                      className="px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl hover:from-pink-600 hover:to-purple-700 transition-all duration-300 hover:scale-105"
-                    >
-                      Upload Photos
-                    </button>
-                  </div>
-                  <p className="mt-2 text-sm text-white/60">
-                    PNG, JPG, GIF up to 10MB
-                  </p>
-                </div>
-              </div>
+            <div className="text-center mb-6">
+              <h3 className="text-xl font-semibold text-white mb-2">Add Your Photos</h3>
+              <p className="text-white/60">Upload at least one photo to continue • Max 5 photos</p>
             </div>
+            
+            <ImageUpload 
+              images={formData.photos} 
+              setImages={(photos) => handleInputChange('photos', photos)}
+              maxImages={5}
+            />
           </div>
         );
 
