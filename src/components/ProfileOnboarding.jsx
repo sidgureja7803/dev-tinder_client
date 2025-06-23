@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,9 +10,11 @@ const ProfileOnboarding = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isInitialized, setIsInitialized] = useState(false);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Form state
   const [formData, setFormData] = useState({
@@ -108,6 +110,55 @@ const ProfileOnboarding = () => {
     );
   }, []);
 
+  // Initialize onboarding data and resume from correct step
+  useEffect(() => {
+    const initializeOnboarding = async () => {
+      try {
+        // Get onboarding status from backend
+        const response = await axios.get(`${BASE_URL}/onboarding/status`, {
+          withCredentials: true
+        });
+        
+        const { onboardingStep, user: userData, currentStepData } = response.data;
+        
+        // Resume from the correct step
+        const resumeStep = location.state?.currentStep ?? onboardingStep ?? 0;
+        setCurrentStep(resumeStep);
+        
+        // Pre-populate form data if available
+        if (userData) {
+          setFormData(prev => ({
+            ...prev,
+            ...userData,
+            dateOfBirth: userData.dateOfBirth ? new Date(userData.dateOfBirth).toISOString().split('T')[0] : '',
+            skills: userData.skills || [],
+            interests: userData.interests || [],
+            photos: userData.photos || [],
+            socialLinks: userData.socialLinks || {
+              github: '',
+              linkedin: '',
+              twitter: '',
+              portfolio: ''
+            },
+            preferences: userData.preferences || prev.preferences
+          }));
+        }
+        
+        // Pre-populate current step data
+        if (currentStepData) {
+          setFormData(prev => ({ ...prev, ...currentStepData }));
+        }
+        
+        setIsInitialized(true);
+      } catch (error) {
+        console.error('Failed to initialize onboarding:', error);
+        setIsInitialized(true); // Still show the form even if fetch fails
+      }
+    };
+    
+    initializeOnboarding();
+  }, [location]);
+
   // Get user's location
   const getLocation = () => {
     if (navigator.geolocation) {
@@ -196,16 +247,43 @@ const ProfileOnboarding = () => {
     }
   };
 
-  const nextStep = () => {
+  const nextStep = async () => {
     if (validateStep(currentStep)) {
-      setCurrentStep(prev => Math.min(prev + 1, steps.length - 1));
-      setError("");
+      setLoading(true);
       
-      // Animate step transition
-      gsap.fromTo('.step-content',
-        { x: 50, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" }
-      );
+      try {
+        // Save current step progress
+        const stepData = getCurrentStepData(currentStep);
+        
+        const response = await axios.post(
+          `${BASE_URL}/onboarding/step/${currentStep}`,
+          stepData,
+          { withCredentials: true }
+        );
+        
+        if (response.data.onboardingCompleted) {
+          // Onboarding is complete, redirect to main app
+          dispatch(addUser(response.data.user));
+          navigate('/app/feed');
+          return;
+        }
+        
+        // Move to next step
+        setCurrentStep(prev => Math.min(prev + 1, steps.length - 1));
+        setError("");
+        
+        // Animate step transition
+        gsap.fromTo('.step-content',
+          { x: 50, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" }
+        );
+        
+      } catch (error) {
+        console.error('Error saving step:', error);
+        setError(error.response?.data?.message || 'Failed to save progress. Please try again.');
+      } finally {
+        setLoading(false);
+      }
     } else {
       setError("Please complete all required fields before proceeding.");
     }
@@ -233,6 +311,52 @@ const ProfileOnboarding = () => {
     return age;
   };
 
+  const getCurrentStepData = (step) => {
+    switch (step) {
+      case 0: // Basic Information
+        return {
+          dateOfBirth: formData.dateOfBirth,
+          gender: formData.gender,
+          religion: formData.religion,
+          height: formData.height,
+          bio: formData.bio
+        };
+      case 1: // Location
+        return {
+          location: formData.location
+        };
+      case 2: // Professional Details
+        return {
+          profession: formData.profession,
+          company: formData.company,
+          ctcRange: formData.ctcRange
+        };
+      case 3: // Education
+        return {
+          education: formData.education
+        };
+      case 4: // Photos
+        return {
+          photos: formData.photos
+        };
+      case 5: // Social Links
+        return {
+          socialLinks: formData.socialLinks
+        };
+      case 6: // Skills & Interests
+        return {
+          skills: formData.skills,
+          interests: formData.interests
+        };
+      case 7: // Preferences
+        return {
+          preferences: formData.preferences
+        };
+      default:
+        return {};
+    }
+  };
+
   const handleSubmit = async () => {
     if (!validateStep(currentStep)) {
       setError("Please complete all required fields before submitting.");
@@ -243,24 +367,16 @@ const ProfileOnboarding = () => {
     setError("");
 
     try {
-      const profileData = {
-        ...formData,
-        age: calculateAge(formData.dateOfBirth),
-        onboardingCompleted: true
-      };
-
-      const response = await axios.put(
-        `${BASE_URL}/profile/update`,
-        profileData,
-        {
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
+      // Save final step and complete onboarding
+      const stepData = getCurrentStepData(currentStep);
+      
+      const response = await axios.post(
+        `${BASE_URL}/onboarding/step/${currentStep}`,
+        stepData,
+        { withCredentials: true }
       );
 
-      if (response.data.success) {
+      if (response.data.onboardingCompleted) {
         dispatch(addUser(response.data.user));
         
         // Success animation
@@ -285,6 +401,23 @@ const ProfileOnboarding = () => {
       setLoading(false);
     }
   };
+
+  // Show loading while initializing
+  if (!isInitialized) {
+    return (
+      <div className="min-h-screen relative">
+        <div className="fixed inset-0 z-0">
+          <div className="absolute inset-0 bg-gradient-to-b from-purple-900 via-slate-900 to-black"></div>
+        </div>
+        <div className="relative z-10 min-h-screen flex items-center justify-center">
+          <div className="text-center text-white">
+            <div className="w-16 h-16 border-4 border-pink-500/30 border-t-pink-500 rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-lg">Loading your onboarding progress...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const renderStepContent = () => {
     switch (currentStep) {

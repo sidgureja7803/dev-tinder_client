@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addUser } from '../utils/userSlice';
 import axios from 'axios';
 import { BASE_URL } from '../utils/constants';
 import '../styles/auth.css';
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     emailId: '',
     password: ''
@@ -48,13 +51,29 @@ const Login = () => {
           return;
         }
         
-        // Check if user needs onboarding
-        if (userData.requiresOnboarding) {
-          navigate('/onboarding');
+        // Add user to Redux store
+        dispatch(addUser(userData));
+        
+        // Handle redirection based on onboarding status
+        if (userData.isVerified && !userData.onboardingCompleted) {
+          // User is verified but hasn't completed onboarding
+          const currentStep = userData.onboardingStep || 0;
+          navigate('/onboarding', { 
+            state: { 
+              currentStep,
+              resumeOnboarding: true 
+            } 
+          });
           return;
         }
         
-        // Navigate to main app
+        if (userData.isVerified && userData.onboardingCompleted) {
+          // User is fully onboarded, go to main app
+          navigate('/app/feed');
+          return;
+        }
+        
+        // Fallback - shouldn't reach here for verified users
         navigate('/app/feed');
       }
     } catch (err) {
