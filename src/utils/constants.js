@@ -1,2 +1,1 @@
-// src/config.js or wherever you define constants
-export const BASE_URL = "http://localhost:7777"; // Force local for testing
+export const BASE_URL = process.env.VITE_API_BASE_URL;
